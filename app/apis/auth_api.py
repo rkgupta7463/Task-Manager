@@ -2,6 +2,7 @@ from ninja import Router,Schema
 from ninja.security import HttpBearer, APIKeyHeader
 from app.models import UserProfile
 from django.contrib.auth import authenticate
+from jwtunits.custom_jwt import create_jwt_token
 
 class TokenAuth(HttpBearer):
     def authenticate(self, request, token):
@@ -13,12 +14,14 @@ class TokenAuth(HttpBearer):
 auth_api = Router(tags=["Authentication"])
 
 @auth_api.post('login/')
-def login(request, email: str, password: str):
-    user = authenticate(request, username=email, password=password)
-    if user is not None:
-        return {"status": True, "message": "Login successful!", "data": {"email": user.email}}
-    else:
-        return {"status": False, "message": "Invalid credentials", "data": ""}
+def login(request, username: str, password: str):
+    user = authenticate(username=username, password=password)
+    if not user:
+        return {"success": False, "message": "Invalid credentials"}
+    
+    token = create_jwt_token(user.id)
+    return {"success": True, "token": token}
+
 
 @auth_api.post('logout/')
 def logout(request):
@@ -31,18 +34,24 @@ class RegisterSchema(Schema):
     password: str
     full_name: str = None
     phone_no: str = None
+    pass1:str
+    pass2:str 
 
-@auth_api.post('register/')
+@auth_api.post("register/")
 def register(request, payload: RegisterSchema):
-    """
-    Register a new user.
-    """
-    data = payload.validate(request.data)
     user = UserProfile.objects.create_user(
-        email=data.email,
-        password=data.password,
-        full_name=data.full_name,
-        phone_no=data.phone_no
+        email=payload.email,
+        full_name=payload.full_name,
+        phone_no=payload.phone_no
     )
-    return {"status": True, "message": "User registered successfully!", "data": {"email": user.email}}
 
+    if payload.pass1.check_password(payload.pass2):
+        user.set_password(payload.pass1)
+        user.save()
+
+    token = create_jwt_token(user.id)
+    return {
+        "status": True,
+        "message": "User registered successfully!",
+        "data": token
+    }

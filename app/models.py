@@ -34,6 +34,22 @@ class UserProfile(AbstractUser):
     def __str__(self):
         return f"{self.email} - create at:- {self.created_at}"
     
+    def serializer(self):
+        dic={}
+        dic['name']=self.full_name
+        dic['email']=self.email
+        dic['phone_no']=self.phone_no
+        dic['created_at']=self.created_at
+        dic['updated_at']=self.updated_at
+        return dic
+
+    @property
+    def short_serializer(self):
+        dic={}
+        dic['name']=self.full_name
+        dic['email']=self.email
+        return dic
+
 
 ### task model    
 class Task(models.Model):

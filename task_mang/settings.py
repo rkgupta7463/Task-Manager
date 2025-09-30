@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-r0lg*xsa$hq7kvx=2!&bgds9w1i8i2i#q0-du!%bpj+39!*a)a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -125,3 +125,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'app.UserProfile'
+
+JWT_SECRET = SECRET_KEY
+JWT_ALGORITHM = "HS256"
+JWT_EXP_DELTA_SECONDS = 300  
