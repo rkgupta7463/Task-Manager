@@ -10,7 +10,7 @@ class JWTAuth(HttpBearer):
         if not payload:
             return None
         try:
-            user = User.objects.get(id=payload["user_id"])
+            user = User.objects.get(id=payload["users"])
             return user
         except User.DoesNotExist:
             return None
