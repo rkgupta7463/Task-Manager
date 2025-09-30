@@ -175,7 +175,10 @@ Example:
 
 ### 1. Signup
 
-**URL:** `/api/v1/signup/`
+**URL:** 
+
+`/api/v1/signup/`
+
 **Method:** POST
 
 **Request Body:**
@@ -210,6 +213,7 @@ Example:
 ### 2. Login
 
 **URL:** `/api/v1/login/`
+
 **Method:** POST
 
 **Request Body:**
@@ -242,6 +246,7 @@ Example:
 ### 3. Logout
 
 **URL:** `/api/v1/logout/`
+
 **Method:** POST
 
 **Headers:**
@@ -265,8 +270,11 @@ Authorization: Bearer <jwt-token>
 ### 4. Task Management
 
 **List Tasks**
+
 **URL:** `/api/v1/tasks/`
+
 **Method:** GET
+
 **Headers:** `Authorization: Bearer <jwt-token>`
 
 **Query Parameters:** `offset=0`, `limit=10`
@@ -291,7 +299,9 @@ Authorization: Bearer <jwt-token>
 ```
 
 **Retrieve Task**
+
 **URL:** `/api/v1/tasks/{task_id}/`
+
 **Method:** GET
 
 **Response:**
@@ -312,7 +322,9 @@ Authorization: Bearer <jwt-token>
 ```
 
 **Create Task**
+
 **URL:** `/api/v1/tasks/`
+
 **Method:** POST
 
 **Request Body:**
@@ -343,7 +355,9 @@ Authorization: Bearer <jwt-token>
 ```
 
 **Update Task**
+
 **URL:** `/api/v1/tasks/{task_id}/`
+
 **Method:** PUT
 
 **Request Body:**
@@ -374,7 +388,9 @@ Authorization: Bearer <jwt-token>
 ```
 
 **Delete Task**
+
 **URL:** `/api/v1/tasks/{task_id}/`
+
 **Method:** DELETE
 
 **Response:**
@@ -395,7 +411,9 @@ Authorization: Bearer <jwt-token>
 ```
 
 **Mark Task Completed**
+
 **URL:** `/api/v1/mark/tasks/{task_id}/`
+
 **Method:** PATCH
 
 **Request Body:**
@@ -428,6 +446,7 @@ Authorization: Bearer <jwt-token>
 ### 5. Task Filtering
 
 **URL:** `/api/v1/filters/tasks/`
+
 **Method:** GET
 
 **Query Parameters:**
