@@ -1,6 +1,7 @@
 from ninja import Router,Schema
 from app.auth import JWTAuth
 from app.models import *
+from django.db.models import Q
 
 api = Router(tags=["Tasks"])
 
@@ -70,6 +71,9 @@ def task_delete(request, task_id: int):
     except Exception as e:
         return {"status": False, "message": f"Task {task_id} not found!", "data": ""}
 
+
+### Additonal api, [optional]
+
 class MarkCompletedSchema(Schema):
     completed:bool=False
 
@@ -87,4 +91,38 @@ def mark_completed(request,task_id:int,payload:MarkCompletedSchema):
     
     except Exception as e:
         return {"status": False, "message": f"Task {task_id} not found!", "data": ""}
+
+@api.get("filters/tasks/", auth=JWTAuth())
+def filters_task(
+        request,
+        query: str = "",
+        completed: bool = False,
+        offset: int = 0,
+        limit: int = 10
+        ):
+    
+    user = request.auth
+ 
+    tasks_qs = Task.objects.filter(
+        Q(created_by=user) & (Q(title__icontains=query) | Q(description__icontains=query))
+    )
+
+    if completed is not None:
+        tasks_qs = tasks_qs.filter(completed=completed)
+
+    total = tasks_qs.count()
+    tasks = tasks_qs[offset:offset + limit]
+    data = [task.serializer() for task in tasks]
+
+    return {
+        "status": True,
+        "message": "Data fetched!" if data else "No tasks found.",
+        "total": total,
+        "offset": offset,
+        "limit": limit,
+        "data": data,
+    }
+
+
+
 

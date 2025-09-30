@@ -23,7 +23,7 @@ def login(request,payload:LoginSchema):
     
     token = create_jwt_token(user.id)
 
-    return {"status": True, "token": token,"user_detail":user.serializer()}
+    return {"status": True, "token": token,"user_detail":user.short_serializer()}
 
 
 @auth_api.post('logout/')
@@ -59,7 +59,7 @@ def signup(request, payload: RegisterSchema):
             user.save()
 
         token = create_jwt_token(user.id)
-        return {"status": True, "message": "User registered successfully!", "access_token": token,"data":user.serializer()}
+        return {"status": True, "message": "User registered successfully!", "access_token": token,"data":user.short_serializer()}
 
     except IntegrityError as e:
         print("exption:- ",e)
