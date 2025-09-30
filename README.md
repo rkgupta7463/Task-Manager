@@ -1,4 +1,4 @@
-# Django Ninja Task Manager
+# Title: Task Manager API
 
 A simple **Task Manager API** built with **Django** and **Django Ninja**.
 All API endpoints are prefixed with `api/v1/`. Allows users to manage tasks with full **CRUD operations**, **filtering**, **mark as completed**, and **user authentication**. Test cases are also included to ensure API reliability.
