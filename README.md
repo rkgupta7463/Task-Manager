@@ -1,7 +1,7 @@
 # Title: Task Manager API
 
 A simple **Task Manager API** built with **Django** and **Django Ninja**.
-All API endpoints are prefixed with `api/v1/`. Allows users to manage tasks with full **CRUD operations**, **filtering**, **mark as completed**, and **user authentication**. Test cases are also included to ensure API reliability.
+All API endpoints are prefixed with `api/v1/`. Allows users to manage tasks with full **CRUD operations**, **filtering**, **mark as completed**, and **JWT authentication & authorization**. Test cases are also included to ensure API reliability.
 
 ---
 
@@ -27,8 +27,8 @@ All API endpoints are prefixed with `api/v1/`. Allows users to manage tasks with
 ## Requirements
 
 * Python 3.10+
-* pip (Python package manager)
-* Virtual environment (recommended)
+* pip
+* Virtual environment
 
 ---
 
@@ -251,8 +251,7 @@ All task listing endpoints support pagination using `offset` and `limit` paramet
 * Django
 * Django Ninja
 * JWT Authentication
-* SQLite (default, can be changed)
-* Django REST Framework (optional)
+* SQLite 
 
 ---
 
