@@ -351,7 +351,8 @@ Authorization: Bearer <jwt-token>
 ```json
 {
   "title": "Finish project ASAP",
-  "description": "Complete task quickly"
+  "description": "Complete task quickly",
+  "completed": true
 }
 ```
 
@@ -365,7 +366,7 @@ Authorization: Bearer <jwt-token>
     "id": 1,
     "title": "Finish project ASAP",
     "description": "Complete task quickly",
-    "completed": false,
+    "completed": true,
     "created_at": "2025-09-30T15:44:46.477Z",
     "updated_at": "2025-09-30T15:50:46.260Z"
   }
