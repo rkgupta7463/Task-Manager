@@ -1,26 +1,28 @@
-# Title: Task Manager API
+# Task Manager API
 
-A simple **Task Manager API** built with **Django** and **Django Ninja**.
-All API endpoints are prefixed with `api/v1/`. Allows users to manage tasks with full **CRUD operations**, **filtering**, **mark as completed**, and **JWT authentication & authorization**. Test cases are also included to ensure API reliability.
+A simple **Task Manager API** built with **Django** and **Django Ninja (For RESTAPI)**.
+All API endpoints are prefixed with `api/v1/`. This API allows users to manage tasks with full **CRUD operations**, **filtering**, **marking tasks as completed**, and **JWT authentication & authorization**. Test cases are included to ensure API reliability.
 
 ---
 
 ## Features
 
-* **User Authentication**
+### User Authentication
 
-  * Signup
-  * Login
-  * Logout
-* **Task Management**
+* Signup
+* Login
+* Logout
 
-  * Create, Read, Update, Delete tasks
-  * Mark tasks as completed
-  * Filter tasks by title, description, and completion status
-  * Pagination support
-* **Testing**
+### Task Management
 
-  * Test cases included in `test.py`
+* Create, Read, Update, Delete tasks
+* Mark tasks as completed
+* Filter tasks by title, description, and completion status
+* Pagination support
+
+### Testing
+
+* Test cases included in `test.py`
 
 ---
 
@@ -36,7 +38,7 @@ All API endpoints are prefixed with `api/v1/`. Allows users to manage tasks with
 
 ### 1. Install Python
 
-Download Python from [python.org](https://www.python.org/downloads/) and make sure to **Add Python to PATH** during installation.
+Download Python from [python.org](https://www.python.org/downloads/) and ensure **Add Python to PATH** is selected.
 
 Check installation:
 
@@ -51,7 +53,7 @@ pip --version
 
 ```bash
 git clone https://github.com/rkgupta7463/Task-Manager.git
-cd task-manager
+cd Task-Manager
 ```
 
 ---
@@ -86,14 +88,12 @@ If `requirements.txt` exists:
 pip install -r requirements.txt
 ```
 
-If not, manually install:
+Or manually install:
 
 ```bash
-pip install django
-django-ninja
-djangorestframework
-djangorestframework-simplejwt
+pip install django django-ninja PyJWT
 ```
+
 
 ---
 
@@ -117,38 +117,44 @@ Visit:
 http://127.0.0.1:8000
 ```
 
+To view interactive API documentation:
+
+```
+http://127.0.0.1:8000/api/docs
+```
+
 ---
 
 ## API Endpoints (prefixed with `api/v1/`)
 
 ### User Authentication
 
-| Method | Endpoint          | Description         |
-| ------ | ----------------- | ------------------- |
-| POST   | `/api/v1/signup/` | Create a new user   |
-| POST   | `/api/v1/login/`  | Login existing user |
-| POST   | `/api/v1/logout/` | Logout user         |
+| Method | Endpoint   | Description         |
+| ------ | ---------- | ------------------- |
+| POST   | `api/v1/signup/` | Create a new user   |
+| POST   | `api/v1/login/`  | Login existing user |
+| POST   | `api/v1/logout/` | Logout user         |
 
 ---
 
 ### Task Endpoints
 
-| Method | Endpoint                        | Description                |
-| ------ | ------------------------------- | -------------------------- |
-| GET    | `/api/v1/tasks/`                | List all tasks (paginated) |
-| GET    | `/api/v1/tasks/{task_id}/`      | Retrieve task details      |
-| POST   | `/api/v1/tasks/`                | Create a new task          |
-| PUT    | `/api/v1/tasks/{task_id}/`      | Update a task              |
-| DELETE | `/api/v1/tasks/{task_id}/`      | Delete a task              |
-| PATCH  | `/api/v1/mark/tasks/{task_id}/` | Mark a task as completed   |
+| Method | Endpoint                 | Description                |
+| ------ | ------------------------ | -------------------------- |
+| GET    | `api/v1/tasks/`                | List all tasks (paginated) |
+| GET    | `api/v1/tasks/{task_id}/`      | Retrieve task details      |
+| POST   | `api/v1/tasks/`                | Create a new task          |
+| PUT    | `api/v1/tasks/{task_id}/`      | Update a task              |
+| DELETE | `api/v1/tasks/{task_id}/`      | Delete a task              |
+| PATCH  | `api/v1/mark/tasks/{task_id}/` | Mark a task as completed   |
 
 ---
 
 ### Task Filtering
 
-| Method | Endpoint                 | Description                                                        |
-| ------ | ------------------------ | ------------------------------------------------------------------ |
-| GET    | `/api/v1/filters/tasks/` | Filter tasks by query and completion status (pagination supported) |
+| Method | Endpoint          | Description                                                        |
+| ------ | ----------------- | ------------------------------------------------------------------ |
+| GET    | `api/v1/filters/tasks/` | Filter tasks by query and completion status (pagination supported) |
 
 Query parameters:
 
@@ -160,60 +166,299 @@ Query parameters:
 Example:
 
 ```
-/api/v1/filters/tasks/?query=meeting&completed=false&offset=0&limit=10
+/api/v1/filters/tasks/?query=project&completed=false&offset=0&limit=5
 ```
 
 ---
 
-## JWT Authentication
+## Example Requests & Responses
 
-1. Login to get a JWT token:
+### 1. Signup
 
-```http
-POST /api/v1/login/
+**URL:** `/api/v1/signup/`
+**Method:** POST
+
+**Request Body:**
+
+```json
 {
-  "email": "your-email",
-  "password": "your-password"
+  "email": "user@example.com",
+  "password": "password123",
+  "full_name": "John Doe",
+  "phone_no": "1234567890"
 }
 ```
 
-2. Use the token in **Authorization header** for protected endpoints:
+**Response:**
 
-```
-Authorization: Bearer <your-token>
+```json
+{
+  "status": true,
+  "message": "User created successfully",
+  "access_token": "<jwt-token>",
+  "data": {
+    "id": 1,
+    "email": "user@example.com",
+    "full_name": "John Doe",
+    "phone_number": "1234567890"
+  }
+}
 ```
 
 ---
 
-## Example API Requests
+### 2. Login
+
+**URL:** `/api/v1/login/`
+**Method:** POST
+
+**Request Body:**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+**Response:**
+
+```json
+{
+  "status": true,
+  "message": "Login successful",
+  "token": "<jwt-token>",
+  "user_detail": {
+    "id": 1,
+    "email": "user@example.com",
+    "full_name": "John Doe",
+    "phone_number": "1234567890"
+  }
+}
+```
+
+---
+
+### 3. Logout
+
+**URL:** `/api/v1/logout/`
+**Method:** POST
+
+**Headers:**
+
+```
+Authorization: Bearer <jwt-token>
+```
+
+**Response:**
+
+```json
+{
+  "status": true,
+  "message": "Logout successful",
+  "data": null
+}
+```
+
+---
+
+### 4. Task Management
+
+**List Tasks**
+**URL:** `/api/v1/tasks/`
+**Method:** GET
+**Headers:** `Authorization: Bearer <jwt-token>`
+
+**Query Parameters:** `offset=0`, `limit=10`
+
+**Response:**
+
+```json
+{
+  "status": true,
+  "message": "Tasks fetched successfully",
+  "data": [
+    {
+      "id": 1,
+      "title": "Finish project",
+      "description": "Complete the Django Ninja task manager",
+      "completed": false,
+      "created_at": "2025-09-30T15:44:46.477Z",
+      "updated_at": "2025-09-30T15:44:46.260Z"
+    }
+  ]
+}
+```
+
+**Retrieve Task**
+**URL:** `/api/v1/tasks/{task_id}/`
+**Method:** GET
+
+**Response:**
+
+```json
+{
+  "status": true,
+  "message": "Task details fetched",
+  "data": {
+    "id": 1,
+    "title": "Finish project",
+    "description": "Complete the Django Ninja task manager",
+    "completed": false,
+    "created_at": "2025-09-30T15:44:46.477Z",
+    "updated_at": "2025-09-30T15:44:46.260Z"
+  }
+}
+```
 
 **Create Task**
+**URL:** `/api/v1/tasks/`
+**Method:** POST
 
-```http
-POST /api/v1/tasks/
-Authorization: Bearer <token>
+**Request Body:**
+
+```json
 {
   "title": "Finish project",
   "description": "Complete the Django Ninja task manager",
- "completed":true
+  "completed": true
+}
+```
+
+**Response:**
+
+```json
+{
+  "status": true,
+  "message": "Task created successfully",
+  "data": {
+    "id": 1,
+    "title": "Finish project",
+    "description": "Complete the Django Ninja task manager",
+    "completed": true,
+    "created_at": "2025-09-30T15:44:46.477Z",
+    "updated_at": "2025-09-30T15:50:46.260Z"
+  }
+}
+```
+
+**Update Task**
+**URL:** `/api/v1/tasks/{task_id}/`
+**Method:** PUT
+
+**Request Body:**
+
+```json
+{
+  "title": "Finish project ASAP",
+  "description": "Complete task quickly"
+}
+```
+
+**Response:**
+
+```json
+{
+  "status": true,
+  "message": "Task updated successfully",
+  "data": {
+    "id": 1,
+    "title": "Finish project ASAP",
+    "description": "Complete task quickly",
+    "completed": false,
+    "created_at": "2025-09-30T15:44:46.477Z",
+    "updated_at": "2025-09-30T15:50:46.260Z"
+  }
+}
+```
+
+**Delete Task**
+**URL:** `/api/v1/tasks/{task_id}/`
+**Method:** DELETE
+
+**Response:**
+
+```json
+{
+  "status": true,
+  "message": "Task deleted successfully",
+  "data":  {
+    "id": null,
+    "title": "Finish project ASAP",
+    "description": "Complete task quickly",
+    "completed": false,
+    "created_at": "2025-09-30T15:44:46.477Z",
+    "updated_at": "2025-09-30T15:50:46.260Z"
+  }
 }
 ```
 
 **Mark Task Completed**
+**URL:** `/api/v1/mark/tasks/{task_id}/`
+**Method:** PATCH
 
-```http
-PATCH /api/v1/mark/tasks/1/
-Authorization: Bearer <token>
+**Request Body:**
+
+```json
 {
   "completed": true
 }
 ```
 
-**Filter Tasks**
+**Response:**
 
-```http
-GET /api/v1/filters/tasks/?query=project&completed=false&offset=0&limit=5
-Authorization: Bearer <token>
+```json
+{
+  "status": true,
+  "message": "Task marked as completed",
+  "data": {
+    "id": 1,
+    "title": "Finish project ASAP",
+    "description": "Complete task quickly",
+    "completed": true,
+    "created_at": "2025-09-30T15:44:46.477Z",
+    "updated_at": "2025-09-30T15:50:46.260Z"
+  }
+}
+```
+
+---
+
+### 5. Task Filtering
+
+**URL:** `/api/v1/filters/tasks/`
+**Method:** GET
+
+**Query Parameters:**
+
+* `query` → search by title/description
+* `completed` → true or false
+* `offset` → start index
+* `limit` → number of tasks
+
+**Example:**
+
+```
+/api/v1/filters/tasks/?query=project&completed=false&offset=0&limit=5
+```
+
+**Response:**
+
+```json
+{
+  "status": true,
+  "message": "Filtered tasks fetched",
+  "data": [
+    {
+      "id": 1,
+      "title": "Finish project ASAP",
+      "description": "Complete task quickly",
+      "completed": false,
+      "created_at": "2025-09-30T15:44:46.477Z",
+      "updated_at": "2025-09-30T15:50:46.260Z"
+    }
+  ]
+}
 ```
 
 ---
@@ -237,7 +482,7 @@ Test cases are located in `test.py` and cover:
 
 ## Pagination
 
-All task listing endpoints support pagination using `offset` and `limit` parameters.
+All task listing endpoints support pagination using `offset` and `limit` parameters:
 
 ```http
 /api/v1/tasks/?offset=0&limit=10
@@ -251,7 +496,7 @@ All task listing endpoints support pagination using `offset` and `limit` paramet
 * Django
 * Django Ninja
 * JWT Authentication
-* SQLite 
+* SQLite
 
 ---
 
