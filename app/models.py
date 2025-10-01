@@ -69,11 +69,11 @@ class Task(models.Model):
     
     created_by=models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name="creator")
     updated_by=models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name="updated_by")
-    
+
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 
-    def __Str__(self):
+    def __str__(self):
         return f"{self.title} - created at: {self.created_at} - completed: {self.completed}"
     
     def serializer(self):
