@@ -5,6 +5,14 @@ All API endpoints are prefixed with `api/v1/`. This API allows users to manage t
 
 ---
 
+### 🔐 Role-based Access Control
+
+* **Superuser (Admin)**: Can perform all CRUD operations on any task (create, read, update, delete tasks created by any user).
+
+* **Regular User**: Can only manage their own tasks (create tasks, update only their tasks, delete their tasks, filter their tasks).
+
+---
+
 ## Features
 
 ### User Authentication
