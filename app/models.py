@@ -68,7 +68,8 @@ class Task(models.Model):
     completed=models.BooleanField(default=False)
     
     created_by=models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name="creator")
-
+    updated_by=models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name="updated_by")
+    
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 
